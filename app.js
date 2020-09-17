@@ -6,16 +6,20 @@ import bodyParser from "body-parser";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
 import globalRouter from "./routers/globalRouter";
+import { localsMiddleware } from "./middlewares";
 import routes from "./routes";
 
 const app = express();
+
+// 헬멧을 제일 위에다 배치
+app.use(helmet());
 // view engine을 pug로 설정하기
 app.set("view engine", "pug");
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(helmet());
 app.use(morgan("dev"));
+app.use(localsMiddleware);
 
 // 크게 3개로 나눔 홈, users, videos
 app.use(routes.home, globalRouter);

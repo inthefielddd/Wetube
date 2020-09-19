@@ -1,5 +1,10 @@
+import { videos } from "../db";
+
 // 비디오를 로딩하니까 home도 videocontroller로 들어간다
-export const home = (req, res) => res.render("home", { pageTitle: "Home" });
+export const home = (req, res) => {
+  res.render("home", { pageTitle: "Home", videos });
+};
+// videos가 home의 템플릿에 전달됨.
 
 export const search = (req, res) => {
   const {

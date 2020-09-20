@@ -1,4 +1,3 @@
-import { videos } from "../db";
 import routes from "../routes";
 
 // 비디오를 로딩하니까 home도 videocontroller로 들어간다

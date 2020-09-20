@@ -11,7 +11,7 @@ export const search = (req, res) => {
     query: { term: searchingBy },
   } = req;
 
-  res.render("search", { pageTitle: "Search", searchingBy });
+  res.render("search", { pageTitle: "Search", searchingBy, videos });
 };
 
 export const vidoes = (req, res) =>

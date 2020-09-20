@@ -2,7 +2,8 @@ import express from "express";
 import {
   getJoin,
   postJoin,
-  login,
+  getLogin,
+  postLogin,
   logout,
 } from "../controllers/userController";
 import { home, search } from "../controllers/videoController";
@@ -11,9 +12,11 @@ import routes from "../routes";
 const globalRouter = express.Router();
 
 globalRouter.get(routes.home, home);
-globalRouter.get(routes.login, login);
+globalRouter.get(routes.login, getLogin);
+globalRouter.post(routes.login, postLogin);
 globalRouter.get(routes.logout, logout);
 
+// 하나의 router를 나눈다
 globalRouter.get(routes.join, getJoin);
 globalRouter.post(routes.join, postJoin);
 

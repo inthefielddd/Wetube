@@ -1,4 +1,5 @@
 import routes from "../routes";
+
 export const getJoin = (req, res) => {
   res.render("join", { pageTitle: "Join" });
 };
@@ -28,9 +29,9 @@ export const postLogin = (req, res) => {
 };
 
 export const logout = (req, res) => {
+  //To Do :Process Log Out
   res.redirect(routes.home);
   //동시에 isAuthenicated가 false가 되어야함
-  // res.render("logout", { pageTitle: "Logout" });
 };
 
 export const users = (req, res) => res.render("users", { pageTitle: "Users" });

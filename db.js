@@ -1,8 +1,12 @@
 import monogoose from "mongoose";
+import dotenv from "dotenv";
 
-monogoose.connect("mongodb://127.0.0.1:27017/we-tube", {
+dotenv.config();
+
+monogoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
   useFindAndModify: false,
+  useUnifiedTopology: true,
 });
 
 const db = monogoose.connection;

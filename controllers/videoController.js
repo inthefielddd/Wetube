@@ -1,8 +1,16 @@
 import routes from "../routes";
+import Video from "../models/Video";
 
 // 비디오를 로딩하니까 home도 videocontroller로 들어간다
-export const home = (req, res) => {
-  res.render("home", { pageTitle: "Home", videos });
+export const home = async (req, res) => {
+  try {
+    const videos = await Video.find({});
+    res.render("home", { pageTitle: "Home", videos });
+  } catch (error) {
+    console.log(error);
+    res.render("home", { pageTitle: "Home", videos: [] });
+  }
+  //error가 생기면 video는 없을거고, default로 videos는 빈 array로 설정하기
 };
 // videos가 home의 템플릿에 전달됨.
 

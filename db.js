@@ -13,6 +13,7 @@ const db = monogoose.connection;
 
 const handleOpen = () => console.log("✅ Connected to DB ");
 const hanldeError = () => console.log("❌ Error on DB Connection:${error}");
-// DB를 한번 실행할떄마다
+// DB를 한번 실행할떄마마
 db.once("open", handleOpen);
+// db연결 에러 났을때
 db.on("error", hanldeError);

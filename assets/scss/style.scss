@@ -1,0 +1,10 @@
+@import "config/_variables.scss";
+
+body {
+  background-color: $sexyColor;
+}
+
+a {
+  text-decoration: none;
+  color: $textColor;
+}

@@ -1,0 +1,60 @@
+.header {
+  background-color: $red;
+  margin-bottom: 50px;
+
+  .header_wrapper {
+    padding: 5px 0px;
+    width: 100%;
+    margin: 0 auto;
+    max-width: 1200px;
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    background-color: $red;
+
+    .header__column {
+      i {
+        color: white;
+        font-size: 40px;
+      }
+      &:nth-child(2) {
+        width: 100%;
+        justify-self: center;
+      }
+      &:last-child {
+        justify-self: end;
+      }
+
+      ul {
+        display: flex;
+        color: white;
+        align-items: center;
+        font-weight: 600;
+        text-transform: uppercase;
+        li:not(:last-child) {
+          margin-right: 15px;
+        }
+        li a {
+          color: white;
+        }
+      }
+
+      form {
+        width: 100%;
+        input {
+          width: 100%;
+          padding: 7px 10px;
+          border-radius: 5px;
+          font-size: $font-medium;
+          color: $black;
+          font-weight: 600;
+          //글자 쓸때 효과 추가
+          &::placeholder {
+            font-weight: 200;
+            color: rgba(0, 0, 0, 0.7);
+          }
+        }
+      }
+    }
+  }
+}

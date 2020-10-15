@@ -51,7 +51,6 @@ export const githubLoginCallback = async(_, __, profile, cb) =>{
   const {
     _json:{id, avatar_url:avatarUrl, name, email}
   } = profile;
-
   try{
     const user = await User.findOne({ email })
     if(user){
@@ -93,8 +92,6 @@ export const postFacebookLogIn = (req, res) => {
 };
 
 
-
-
 export const logout = (req, res) => {
   req.logout();
   res.redirect(routes.home);
@@ -111,15 +108,60 @@ export const userDetail = async (req, res) => {
     params: { id }
   } = req;
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(id).populate("videos")
+    console.log(user);
     res.render("userDetail", { pageTitle: "User Detail", user });
   } catch (error) {
     res.redirect(routes.home);
   }
 };
 
-
-export const editProfile = (req, res) =>
+//Edit Profile
+export const getEditProfile = (req, res) =>{
   res.render("editProfile", { pageTitle: "Edit Profile" });
-export const changePassword = (req, res) =>
-  res.render("changePassword", { pageTitle: "Change Password" });
+};
+
+export const postEditProfile = async(req, res) =>{
+  const {
+   body: {name, email},
+   file,
+  } =req;
+  try{
+     await User.findByIdAndUpdate(req.user.id, {
+      name,
+      email,
+      //file이 있다면 file.path를 update하고, file이 없고, avatar 가지고 있다면 req.user.avatarUrl
+      //현재 로그인된 유저의 req.user.avatarUrl을 그대로 가져온다
+      avatarUrl: file ? file.path : req.user.avatarUrl
+
+    });
+    res.redirect(routes.me)
+  }catch(error){
+    res.render("editProfile",{ pageTitle: "Edit Profile" })
+  }
+};
+
+export const getChangePassword = (req, res) =>{
+  res.render('changePassword', { pageTitle : "Change Password"} )
+};
+
+export const postChangePassword = async(req, res) =>{
+  const {
+    body: { oldPassword, newPassword, newPassword1}
+  } =req;
+  try{
+    if(newPassword !== newPassword1){
+      //비밀번호가 맞지 않을 때
+      res.status(400);
+      res.redirect(`/users/${routes.changePassword}`)
+      return;
+    }
+    await req.user.changePassword(oldPassword, newPassword);
+    res.redirect(routes.me);
+  }catch(error){
+    res.status(400);
+    res.redirect(`/users/${routes.changePassword}`);
+  }
+}
+
+//changePassword는 passport-local-mongoose가 가지고 있는 메소드 중에 하나

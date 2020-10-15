@@ -33,28 +33,28 @@ export const search = async (req, res) => {
   res.render("search", { pageTitle: "Search", searchingBy, videos });
 };
 
-// export const vidoes = (req, res) =>
-//   res.render("vidoes", { pageTitle: "Vidoes" });
-
 export const getUpload = (req, res) => {
   res.render("upload", { pageTitle: "Upload" });
 };
 
-export const postUpload = async (req, res) => {
+export const postUpload = async(req, res) =>{
   const {
-    body: { title, description },
-    file: { path },
-  } = req;
-
-  const newVideo = await Video.create({
-    fileUrl: path,
-    title,
-    description,
-  });
-
-  console.log(newVideo);
-  res.redirect(routes.videoDetail(newVideo.id));
-  //Video는 실제 ID를 가지고 있기떄문에
+    body :{title, description},
+    file :{path}
+   } = req;
+   //만들어질 비디오에 user의 id 값을 가져온다
+   //req안에 user객체가 있다 
+   //로그인을 했기 때문에 (passport)
+   const newVideo = await Video.create({
+     fileUrl :path,
+     title,
+     description,
+     creator : req.user.id
+   });
+   //로그인한유저가 upload를 하면 req안에있는 user객체안에 만든 비디오의 id 값을 넣어준디ㅏ
+   req.user.videos.push(newVideo.id);
+   req.user.save();
+   res.redirect(routes.videoDetail(newVideo.id));
 };
 
 export const videoDetail = async (req, res) => {
@@ -62,7 +62,9 @@ export const videoDetail = async (req, res) => {
     params: { id },
   } = req;
   try {
-    const video = await Video.findById(id);
+    //객체를 데려오는 함수 populate
+    // populate는 object ID타입에만 쓸 수 있다
+    const video = await Video.findById(id).populate("creator");
     res.render("videoDetail", { pageTitle: video.title, video });
   } catch {
     res.redirect(routes.home);
@@ -76,7 +78,13 @@ export const getEditVideo = async (req, res) => {
   } = req;
   try {
     const video = await Video.findById(id);
-    res.render("editVideo", { pageTitle: `Edit ${video.title}`, video });
+    //router로 접근하는 것을 막기위해서 설정해주기
+    //router값만 써서 접근하지 못하게 보안을 위한 설정 
+    if(video.creator !== req.user.id){
+      throw Error();
+    }else{
+      res.render("editVideo", { pageTitle: `Edit ${video.title}`, video });
+    }
   } catch (error) {
     res.render(routes.home);
   }
@@ -100,7 +108,14 @@ export const deleteVideo = async (req, res) => {
     params: { id },
   } = req;
   try {
-    await Video.findByIdAndRemove({ _id: id });
-  } catch (error) {}
-  res.redirect(routes.home);
+    //보안을 위해 해당유저가 아닌 
+    const video = await Video.findById(id);
+    if(video.creator !== req.user.id){
+      throw Error();
+    }else{
+      await Video.findByIdAndRemove({ _id: id });
+    }
+  } catch (error) {
+    res.redirect(routes.home);
+  }
 };

@@ -40,7 +40,7 @@
     "dev:server": "nodemon --exec babel-node init.js --delay 2 --ignore '.scss' --ignore 'static'",
     "dev:assets": "WEBPACK_ENV=development webpack -w",
     "bulid:assets": "WEBPACK_ENV=production webpack",
-    "tunnel" : "lt  --port 2000"
+    "tunnel": "lt  --port 2000"
   },
   "devDependencies": {
     "eslint": "^7.9.0",

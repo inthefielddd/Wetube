@@ -78,15 +78,13 @@ export const getEditVideo = async (req, res) => {
   } = req;
   try {
     const video = await Video.findById(id);
-    //router로 접근하는 것을 막기위해서 설정해주기
-    //router값만 써서 접근하지 못하게 보안을 위한 설정 
     if(video.creator !== req.user.id){
       throw Error();
     }else{
       res.render("editVideo", { pageTitle: `Edit ${video.title}`, video });
     }
   } catch (error) {
-    res.render(routes.home);
+    res.redirect(routes.home);
   }
 };
 
@@ -98,7 +96,7 @@ export const postEditVideo = async (req, res) => {
   try {
     await Video.findByIdAndUpdate({ _id: id }, { title, description });
     res.redirect(routes.videoDetail(id));
-  } catch {
+  } catch(error) {
     res.render("editVideo", { pageTitle: "Edit Video" });
   }
 };
@@ -108,7 +106,6 @@ export const deleteVideo = async (req, res) => {
     params: { id },
   } = req;
   try {
-    //보안을 위해 해당유저가 아닌 
     const video = await Video.findById(id);
     if(video.creator !== req.user.id){
       throw Error();

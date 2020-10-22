@@ -1,3 +1,4 @@
 import "../scss/style.scss";
-import "../js/videoPlayer";
-import "../js/videoRecorder";
+import "./videoPlayer";
+import "./videoPlayer";
+import "./addComment";

@@ -1,3 +1,4 @@
+import axios from "axios";
 const videoContainer = document.getElementById("jsVideoPlayer");
 const videoPlayer = document.querySelector("#jsVideoPlayer video")
 const playBtn = document.getElementById("jsPlayButton");
@@ -5,8 +6,18 @@ const volumeBtn = document.getElementById("jsVolumeBtn");
 const fullScrBtn = document.getElementById("jsFullScreen");
 const currentTime = document.getElementById("currentTime"); //재생시간
 const totalTime = document.getElementById("totalTime"); //토탈시간
-const volumeRange = document.getElementById("jsVolume")
+const volumeRange = document.getElementById("jsVolume");
     
+
+const registerView = () =>{
+    const videoId = window.location.href.split("/videos/")[1]
+    fetch(`/api/${videoId}/view`, {method:"POST"})
+}
+    //여기서 method를 post로 쓰는 이유는
+    //database를 변경해야하면 getRequest를쓰고
+    //database를 변경할 필요없으면 postRequest 쓴다
+
+
     function handlePlayClick(){
         if(videoPlayer.paused){
             videoPlayer.play();
@@ -103,6 +114,7 @@ const volumeRange = document.getElementById("jsVolume")
 
    //영상 재생이 다끝났을때
    function handleEnded(){
+       registerView();
        videoPlayer.currentTime = 0;
        playBtn.innerHTML = '<i class="fas fa-play"></i>';
    }
@@ -125,7 +137,7 @@ const volumeRange = document.getElementById("jsVolume")
    }
    
     function init(){
-        videoPlayer.volume = "0.5";
+        videoPlayer.volume = 0.5;
         playBtn.addEventListener("click", handlePlayClick);
         volumeBtn.addEventListener("click", handleVolumeClick);
         fullScrBtn.addEventListener("click", goFullScreen);
@@ -141,4 +153,3 @@ const volumeRange = document.getElementById("jsVolume")
     if(videoContainer){
         init();
     }
-

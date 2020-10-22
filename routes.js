@@ -25,7 +25,13 @@ const GITHUB_CALLBACK = "/auth/github/callback";
 
 //Fackbook
 const FB = "/auth/facebook";
-const FB_CALLBACK = "/auth/facebook/callback"
+const FB_CALLBACK = "/auth/facebook/callback";
+
+//API(서버와 통신하기 위한 URL이 될거야)
+//어떤 것도 렌더하지 않음
+const API = "/api";
+const REGISTER_VIEW = "/:id/view";
+const ADD_COMMENT = "/:id/comment";
 
 // routes object
 const routes = {
@@ -74,8 +80,10 @@ const routes = {
   githubCallback:GITHUB_CALLBACK,
   me:ME,
   facebook:FB,
-  facebookCallback:FB_CALLBACK
-  
+  facebookCallback:FB_CALLBACK,
+  api:API,
+  registerView:REGISTER_VIEW,
+  addComment:ADD_COMMENT
 };
 
 export default routes;
